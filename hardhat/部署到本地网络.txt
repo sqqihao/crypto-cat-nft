@@ -1,0 +1,16 @@
+启动hardhat测试网节点
+npx hardhat node
+
+启动部署
+npx hardhat --network local run scripts/deploy.ts
+ 
+然后把生成的添加到文件  src/data/constant.ts 
+～～～～
+CatContract deployed to:  0x0165878A594ca255338adfa4d48449f69242Eb8F
+Marketplace deployed to:  0xa513E6E4b8f2a923D98304ec87F64353C4D5C853
+～～～～
+
+
+前端fontend项目
+运行yarn install （全局代理）
+yarn dev 启动（相对于next dev 启动） 

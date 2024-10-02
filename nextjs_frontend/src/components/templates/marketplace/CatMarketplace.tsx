@@ -1,0 +1,80 @@
+import { type FC, useEffect } from "react";
+
+import { Button, HStack, Text, VStack, Wrap } from "@chakra-ui/react";
+import { formatEther } from "viem";
+import { useAccount } from "wagmi";
+
+import { Loading, TabHeader } from "@/components/elements";
+import { useReadContract, useWriteContract } from "@/hooks";
+import { useStore } from "@/store/store";
+
+import DisplayCat from "../myCats/components/DisplayCat";
+import NoCatFound from "../myCats/components/NoCatFound";
+
+const CatMarketplace: FC = () => {
+  const { address } = useAccount();
+  const { catsOffersForMarket } = useStore();
+  const { getCatsOffersForMarket } = useReadContract();
+  const { cancelOffer, buyOffer, loading } = useWriteContract();
+
+  useEffect(() => {
+    if (address) {
+      getCatsOffersForMarket(address);
+    }
+  }, [address, getCatsOffersForMarket]);
+
+  const cancel = async (id: number) => {
+    await cancelOffer(id);
+  };
+
+  const buy = async (id: number, price: number) => {
+    await buyOffer(id, price);
+  };
+
+  return (
+    <>
+      <TabHeader title="NFT猫市场" description="显示所有售卖的猫" />
+
+      {!catsOffersForMarket && <Loading />}
+
+      {catsOffersForMarket?.length === 0 ? (
+        <NoCatFound />
+      ) : (
+        <Wrap w={"80%"} justify="center" m="auto">
+          {catsOffersForMarket?.map((cat: CatOffersForMarket) => {
+            const id = Number(cat.catData.indexId);
+            const price = Number(formatEther(cat.marketData.price));
+
+            return (
+              <VStack bg={"white"} className="card" key={cat.catData.indexId}>
+                <DisplayCat dnaBN={cat.catData.genes} id={id} generation={Number(cat.catData.generation)} />
+
+                <HStack gap={4}>
+                  <Text fontSize="lg" fontWeight={700} color={"black"} className="text-shadow-light">
+                    {price} ETH
+                  </Text>
+                  {cat.marketData.ownOffer ? (
+                    <Button colorScheme="red" isLoading={loading} onClick={() => cancel(price)} className="box-shadow">
+                      取消
+                    </Button>
+                  ) : (
+                    <Button
+                      colorScheme="green"
+                      isLoading={loading}
+                      onClick={() => buy(id, price)}
+                      className="box-shadow"
+                    >
+                      购买
+                    </Button>
+                  )}
+                </HStack>
+              </VStack>
+            );
+          })}
+        </Wrap>
+      )}
+    </>
+  );
+};
+
+export default CatMarketplace;

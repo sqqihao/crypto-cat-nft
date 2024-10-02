@@ -1,0 +1,9 @@
+node_modules
+build/
+.next/
+artifacts
+cache
+coverage*
+gasReporterOutput.json
+yarn.lock
+package-lock.json
