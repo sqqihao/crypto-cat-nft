@@ -1,5 +1,10 @@
 
 .env
+./src/
+/src/
+
+./build/
+/build/
 
 package.json
 node_modules

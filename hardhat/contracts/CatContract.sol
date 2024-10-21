@@ -4,216 +4,107 @@ pragma solidity 0.8.20;
 import {ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
+
 contract CatContract is ERC721Enumerable {
-    /* Storage:
-     ***********/
+    uint256 MAX_SUPPLY;
+    uint256 catsCount = 0;
 
-    uint8 public immutable CREATION_LIMIT_GEN0; 
-    uint8 public gen0Count = 0; 
-    uint256 public immutable MAX_CAT_SUPPLY; 
-    uint256 public catsSupplyCount; 
-
-    struct Cat {
-        uint16 generation;
-        uint32 indexId;
-        uint32 dadId;
-        uint32 mumId;
+    struct Cat{
+        uint256 generation;
+        uint256 indexId;
+        uint256 dadId;
+        uint256 mumId;
         uint64 birthTime;
         uint256 genes;
     }
-
-    Cat[] public cats; 
-
-    /* Events:
-     **********/
+    Cat[] cats;
 
     event Birth(
-        address indexed owner,
-        uint256 indexed catId,
+        address owner,
+        uint256 indexId,
         uint256 dadId,
         uint256 mumId,
         uint256 genes
     );
+    
 
-    /* Errors:
-     **********/
-
-    error CatContract__NoMoreGen0Available();
-    error CatContract__NonExistentCat();
-    error CatContract__SameCatSelected();
-    error CatContract__NotOwned();
-
-    /* Constructor:
-     ***************/
-
-    constructor(
-        uint256 _MAX_CAT_SUPPLY,
-        uint8 _CREATION_LIMIT_GEN0
-    ) ERC721("CryptoCats", "CTC") {
-        MAX_CAT_SUPPLY = _MAX_CAT_SUPPLY;
-        CREATION_LIMIT_GEN0 = _CREATION_LIMIT_GEN0;
+    constructor(uint256 _max_suplly) ERC721("cryptoCat","CCT"){
+        MAX_SUPPLY = _max_suplly;
     }
 
-    /*//////////////////////////////////////////////////////
-                        MINT CAT FUNCTION
-    //////////////////////////////////////////////////////*/
-
-    /**
-     */
-    function createCatGen0(uint256 _genes) public {
-        if (gen0Count >= CREATION_LIMIT_GEN0) {
-            revert CatContract__NoMoreGen0Available();
-        }
-
-        uint32 tokenId = uint32(catsSupplyCount);
-        gen0Count++;
-        _createCat(0, tokenId, 0, 0, _genes, _msgSender());
+    function createCat(uint256 _dna) public{
+        uint256 _tokenId = catsCount;
+        _crateCat(0,_tokenId,0,0,_dna,msg.sender);
+        catsCount+=1;
     }
-
-    function _createCat(
+    function _crateCat(
         uint256 _generation,
         uint256 _tokenId,
         uint256 _dadId,
         uint256 _mumId,
-        uint256 _genes,
-        address _owner
-    ) private returns (uint256) {
-        Cat memory _cat = Cat({
-            generation: uint16(_generation),
-            indexId: uint32(_tokenId),
-            dadId: uint32(_dadId),
-            mumId: uint32(_mumId),
-            birthTime: uint64(block.timestamp),
-            genes: _genes
-        });
-
-        cats.push(_cat);
-        uint256 newCatId = cats.length - 1;
-        catsSupplyCount++;
-
-        emit Birth(_owner, newCatId, _dadId, _mumId, _genes);
-        _safeMint(_owner, newCatId);
-        return newCatId;
+        uint256 _dna,
+        address _owner) public{
+            Cat memory cat = Cat({
+                generation:_generation,
+                indexId:_tokenId,
+                dadId:_dadId,
+                mumId:_mumId,
+                birthTime:uint64(block.timestamp),
+                genes:_dna
+            });
+            cats.push(cat);
+            _safeMint(_owner, _tokenId);
+            emit Birth(_owner,_tokenId,_dadId,_mumId,_dna);
+    }
+    function getCat(uint256 _id) public view returns(Cat memory){
+        Cat memory cat = cats[_id];
+        return cat;
     }
 
-
-    /**
-     */
-    function getCat(
-        uint256 _tokenId
-    )
-        external
-        view
-        returns (
-            uint256 generation,
-            uint256 indexId,
-            uint256 dadId,
-            uint256 mumId,
-            uint256 birthTime,
-            uint256 genes
-        )
-    {
-        if (_tokenId >= cats.length) {
-            revert CatContract__NonExistentCat();
-        }
-        Cat storage cat = cats[_tokenId];
-
-        generation = cat.generation;
-        indexId = cat.indexId;
-        dadId = cat.dadId;
-        mumId = cat.mumId;
-        birthTime = cat.birthTime;
-        genes = cat.genes;
-    }
-
-    /**
-     */
-    function getCatPerOwner(
-        address _owner
-    ) external view returns (uint256[] memory tokensOwned) {
-        uint256 tokenCount = balanceOf(_owner);
-
-        if (tokenCount == 0) {
-            return new uint256[](0);
-        } else {
-            tokensOwned = new uint256[](tokenCount);
-            uint256 index = 0;
-            uint256 supply = totalSupply();
-            for (uint256 tokenId = 0; tokenId < supply; ) {
-                if (ownerOf(tokenId) == _owner) {
-                    tokensOwned[index] = tokenId;
-                    index++;
-                }
-                unchecked {
-                    ++tokenId;
-                }
+    function getCatByOwn() public view returns(uint256 [] memory){
+        uint256 length = balanceOf(msg.sender);
+        uint256 [] memory tokens = new uint256[](length);
+        uint256 index = 0;
+        for(uint i =0; i<catsCount;){
+            if(ownerOf(i)==msg.sender){
+                tokens[index]=i;
+                index++;
             }
-            return tokensOwned;
+            unchecked{
+                i++;
+            }
         }
+        return tokens;
     }
 
-    /*//////////////////////////////////////////////////////
-                        BREED CAT FUNCTIONS
-    //////////////////////////////////////////////////////*/
-
-    /**
-     */
-    function breed(uint256 _dadId, uint256 _mumId) external returns (uint256) {
-        if (
-            ownerOf(_dadId) != _msgSender() && ownerOf(_mumId) != _msgSender()
-        ) {
-            revert CatContract__NotOwned();
-        }
-
-        if (_dadId == _mumId) {
-            revert CatContract__SameCatSelected();
-        }
+    function Breed(uint256 _dadId, uint256 _mumId) public {
+        require(msg.sender == ownerOf(_dadId),"no dad");
+        require(msg.sender == ownerOf(_mumId),"no mum");
 
         uint256 dadDna = cats[_dadId].genes;
         uint256 mumDna = cats[_mumId].genes;
-        uint256 kidDna = _mixDna(dadDna, mumDna);
 
-        uint16 dadGen = cats[_dadId].generation;
-        uint16 mumGen = cats[_mumId].generation;
-        uint16 _generation = _setGeneration(dadGen, mumGen);
+        uint256 kidDna = mixDna(dadDna,mumDna);
+        uint256 generation = getNeneration(cats[_dadId].generation,cats[_mumId].generation);
+        uint256 newTokenId = catsCount;
 
-        uint16 newIndexId = uint16(catsSupplyCount);
+        _crateCat(generation,newTokenId,0,0,kidDna,msg.sender);
+        catsCount = catsCount+1;
 
-        return
-            _createCat(
-                _generation,
-                newIndexId,
-                _dadId,
-                _mumId,
-                kidDna,
-                _msgSender()
-            );
     }
 
-    function _setGeneration(
-        uint16 _dadGen,
-        uint256 _mumGen
-    ) private pure returns (uint16 generation) {
-        if (_mumGen >= _dadGen) {
-            generation = uint16(_mumGen + 1);
-        } else {
-            generation = uint16(_dadGen + 1);
-        }
-    }
-
-    function _mixDna(
-        uint256 _dadDna,
-        uint256 _mumDna
-    ) private view returns (uint256) {
-        uint8 random = uint8(block.timestamp % 255); 
+    function mixDna(uint256 _dadDna, uint256 _mumDna) public view returns(uint256){
+        // randomCattribute();
+        uint8 random = uint8(block.timestamp % 255); // binary between 00000000-11111111
         uint8 index = 7;
         uint16 i;
         uint256[8] memory geneArray;
         uint256 newGene;
 
         for (i = 1; i <= 128; i = i * 2) {
-            uint256 randomMutation = _randomPercent();
+            uint256 randomMutation = randomPercent();
 
+            // 15% mutation chances
             if (randomMutation < 85) {
                 if (random & i != 0) {
                     geneArray[index] = uint8(_mumDna % 100);
@@ -224,10 +115,9 @@ contract CatContract is ERC721Enumerable {
                 if (index == 5 || index == 7) {
                     geneArray[index] = uint8(randomCattribute());
                 } else {
-                    geneArray[index] = uint8(color10to98(_randomPercent()));
+                    geneArray[index] = uint8(randomXtoY(10,98));
                 }
             }
-
             _mumDna = _mumDna / 100;
             _dadDna = _dadDna / 100;
 
@@ -245,47 +135,30 @@ contract CatContract is ERC721Enumerable {
 
         return newGene;
     }
-
-    /*//////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////*/
-
-    function _randomPercent() private view returns (uint256) {
+    function getNeneration(uint256 a, uint256 b) public pure returns(uint256) {
+        if(a>b){
+            return a+1;
+        }else{
+            return b+1;
+        }
+    }
+    function randomPercent() public view returns(uint256){
         uint256 percent = uint256(
             keccak256(
-                abi.encodePacked(block.timestamp, _msgSender(), gasleft())
+                abi.encodePacked(block.timestamp, msg.sender, gasleft())
             )
         ) % 98;
         return percent;
     }
-
-    function color10to98(uint256 _percent) private view returns (uint256) {
-        uint256 result = _percent;
-        while (result < 10) {
-            result = _randomPercent();
-        }
-        return result;
+    function randomXtoY( uint256 start ,uint256 end ) public view returns(uint256){
+       uint randomNum = randomPercent();
+       randomNum = randomNum%(end-start+1);
+       return randomNum+start;
+    }
+    function randomCattribute() public view returns(uint256){
+        uint256 randomAttr1 = randomXtoY(1,6);
+        uint256 randomAttr2 = randomXtoY(1,5);
+        return randomAttr1*10+randomAttr2;
     }
 
-    function randomCattribute() private view returns (uint256 result) {
-        uint256 randomCattribute1 = color1to6(_randomPercent());
-        uint256 randomCattribute2 = color1to5(_randomPercent());
-
-        return randomCattribute1 * 10 + randomCattribute2;
-    }
-
-    function color1to6(uint256 _percent) private view returns (uint256) {
-        uint256 result = _percent % 10;
-        while (result == 0 || result > 6) {
-            result = _randomPercent() % 10;
-        }
-        return result;
-    }
-
-    function color1to5(uint256 _percent) private view returns (uint256) {
-        uint256 result = _percent % 10;
-        while (result == 0 || result > 5) {
-            result = _randomPercent() % 10;
-        }
-        return result;
-    }
 }

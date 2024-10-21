@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Box, Link, Text, VStack } from "@chakra-ui/react";
 
