@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/crypto-cat-nft/build/static/css/main.22b36476.css",
-    "main.js": "/crypto-cat-nft/build/static/js/main.bb82c150.js",
+    "main.js": "/crypto-cat-nft/build/static/js/main.425a2754.js",
     "static/js/5275.7cad71cd.chunk.js": "/crypto-cat-nft/build/static/js/5275.7cad71cd.chunk.js",
     "static/js/6128.ccf65f08.chunk.js": "/crypto-cat-nft/build/static/js/6128.ccf65f08.chunk.js",
     "static/js/9812.28cd8729.chunk.js": "/crypto-cat-nft/build/static/js/9812.28cd8729.chunk.js",
@@ -68,7 +68,7 @@
     "static/media/Poppins-Light.ttf": "/crypto-cat-nft/build/static/media/Poppins-Light.53e02b634e42240b89d8.ttf",
     "index.html": "/crypto-cat-nft/build/index.html",
     "main.22b36476.css.map": "/crypto-cat-nft/build/static/css/main.22b36476.css.map",
-    "main.bb82c150.js.map": "/crypto-cat-nft/build/static/js/main.bb82c150.js.map",
+    "main.425a2754.js.map": "/crypto-cat-nft/build/static/js/main.425a2754.js.map",
     "5275.7cad71cd.chunk.js.map": "/crypto-cat-nft/build/static/js/5275.7cad71cd.chunk.js.map",
     "9812.28cd8729.chunk.js.map": "/crypto-cat-nft/build/static/js/9812.28cd8729.chunk.js.map",
     "6378.6943a230.chunk.js.map": "/crypto-cat-nft/build/static/js/6378.6943a230.chunk.js.map",
@@ -132,6 +132,6 @@
   },
   "entrypoints": [
     "static/css/main.22b36476.css",
-    "static/js/main.bb82c150.js"
+    "static/js/main.425a2754.js"
   ]
 }
