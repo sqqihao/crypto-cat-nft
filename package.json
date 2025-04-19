@@ -1,7 +1,7 @@
 {
   "name": "cats",
   "version": "0.1.0",
-  "homepage": "/crypto-cat-nft/cats/build/",
+  "homepage": "https://sqqihao.github.io/crypto-cat-nft/build/",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.10.3",
