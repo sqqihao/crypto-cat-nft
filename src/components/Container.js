@@ -21,7 +21,7 @@ function Container(){
 
 	return (<div style={constainerStyle} >
  
-        <Router  basename="/crypto-cat-nft/">
+        <Router  basename="/crypto-cat-nft/build/">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/marketplace" element={<Marketplace />} />
