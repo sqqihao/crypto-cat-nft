@@ -1,36 +1,29 @@
 import { Image } from "antd";
-import banner from "../assets/images/banner.png";
-import { Link } from "react-router-dom";
-import { Button } from "antd";
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
+import Header from "./layouts/Header";
 import Home from './Home';
 import Marketplace from './Marketplace';
 import Factory from './Factory';
 import Breed from './Breed';
 import List from './List';
+import Settings from './Settings';
 
 function Container(){
-	const constainerStyle = {
-		backgroundImage:`url(${banner})`,
-		backgroundSize:"100% 80%",
-		backgroundRepeat:"no-repeat",
-		backgroundPosition:"top"
-	};
-
-	return (<div style={constainerStyle} >
- 
-        <Router  basename="/crypto-cat-nft/build/">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/marketplace" element={<Marketplace />} />
-            <Route path="/factory" element={<Factory />} />
-            <Route path="/breed" element={<Breed />} />
-            <Route path="/list" element={<List />} />
-          </Routes>
-        </Router>
-
-	</div>)
+	return (
+		<div className="app-content">
+			<Router>
+				<Header />
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/marketplace" element={<Marketplace />} />
+					<Route path="/factory" element={<Factory />} />
+					<Route path="/breed" element={<Breed />} />
+					<Route path="/list" element={<List />} />
+					<Route path="/settings" element={<Settings />} />
+				</Routes>
+			</Router>
+		</div>
+	)
 }
 export default Container;

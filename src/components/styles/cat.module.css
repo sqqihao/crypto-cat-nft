@@ -309,3 +309,32 @@
   top: -15px;
   left: 58px;
 }
+
+/* DNA 信息条 — 深色半透明 + 边框，无论猫背景啥色都看得清 */
+.dnaDiv {
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 5;
+}
+.dnaPill {
+  display: inline-block;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  background: rgba(15, 15, 25, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 2px 8px;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  line-height: 1.4;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

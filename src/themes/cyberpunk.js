@@ -1,0 +1,70 @@
+// 赛博朋克粉紫主题
+export const cyberpunk = {
+  id: 'cyberpunk',
+  name: '赛博朋克',
+  icon: '🌃',
+  antd: {
+    token: {
+      colorPrimary: '#ff4d8d',
+      colorSuccess: '#10b981',
+      colorWarning: '#f59e0b',
+      colorError: '#ef4444',
+      colorInfo: '#8b5cf6',
+      colorTextBase: '#f0e7ff',
+      colorBgBase: '#0a0118',
+      colorBgContainer: 'rgba(20, 10, 40, 0.85)',
+      colorBgElevated: 'rgba(30, 15, 50, 0.95)',
+      colorBorder: 'rgba(139, 92, 246, 0.3)',
+      colorBorderSecondary: 'rgba(139, 92, 246, 0.2)',
+      borderRadius: 12,
+      fontFamily: "'Space Grotesk', 'Inter', -apple-system, sans-serif",
+      fontSize: 14,
+    },
+    components: {
+      Layout: {
+        bodyBg: '#0a0118',
+        headerBg: 'rgba(15, 5, 30, 0.9)',
+        headerColor: '#f0e7ff',
+        headerHeight: 64,
+        headerPadding: '0 24px',
+      },
+      Menu: {
+        darkItemBg: 'transparent',
+        darkItemColor: 'rgba(240, 231, 255, 0.75)',
+        darkItemHoverColor: '#ff4d8d',
+        darkItemSelectedBg: 'rgba(255, 77, 141, 0.15)',
+        darkItemSelectedColor: '#ff4d8d',
+      },
+      Button: {
+        primaryShadow: '0 0 20px rgba(255, 77, 141, 0.4)',
+      },
+      Card: {
+        colorBgContainer: 'rgba(20, 10, 40, 0.65)',
+      },
+      Modal: {
+        contentBg: 'rgba(15, 5, 30, 0.98)',
+        headerBg: 'transparent',
+        titleColor: '#f0e7ff',
+      },
+    },
+  },
+  // CSS variables for the body & global styles
+  cssVars: {
+    '--bg-primary': '#0a0118',
+    '--bg-secondary': 'rgba(20, 10, 40, 0.85)',
+    '--bg-gradient': 'linear-gradient(135deg, #0a0118 0%, #1a0a2e 50%, #16041d 100%)',
+    '--text-primary': '#f0e7ff',
+    '--text-secondary': 'rgba(240, 231, 255, 0.7)',
+    '--accent-pink': '#ff4d8d',
+    '--accent-purple': '#8b5cf6',
+    '--accent-blue': '#3b82f6',
+    '--accent-cyan': '#22d3ee',
+    '--border-color': 'rgba(139, 92, 246, 0.3)',
+    '--shadow-glow-pink': '0 0 24px rgba(255, 77, 141, 0.4)',
+    '--shadow-glow-purple': '0 0 24px rgba(139, 92, 246, 0.3)',
+    '--shadow-card': '0 8px 32px rgba(139, 92, 246, 0.15), 0 0 0 1px rgba(139, 92, 246, 0.15) inset',
+    '--font-family': "'Space Grotesk', 'Inter', -apple-system, sans-serif",
+  },
+  bgImage: 'linear-gradient(135deg, #0a0118 0%, #1a0a2e 50%, #16041d 100%)',
+  bannerImage: 'linear-gradient(180deg, rgba(255, 77, 141, 0.15) 0%, transparent 60%)',
+};

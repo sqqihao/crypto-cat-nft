@@ -1,38 +1,81 @@
-.App {
-  text-align: center;
+/* App-level layout overrides */
+.app-content {
+  min-height: calc(100vh - 64px - 70px);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Force content padding (override antd defaults) */
+.ant-layout .ant-layout-content {
+  padding: 32px 48px !important;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* Mobile breakpoint — 768px 以下 */
+@media (max-width: 768px) {
+  .ant-layout .ant-layout-content {
+    padding: 16px 12px !important;
+  }
+  .app-content {
+    min-height: calc(100vh - 56px - 60px);
+  }
+  /* Hero 标题字号缩 */
+  h1.ant-typography {
+    font-size: 32px !important;
+  }
+  h3.ant-typography {
+    font-size: 20px !important;
+  }
+  /* AntD Row gutter 缩 */
+  .ant-row {
+    margin-left: -6px !important;
+    margin-right: -6px !important;
+  }
+  .ant-row > .ant-col {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+  /* 按钮触屏最小 44x44（Apple HIG） */
+  .ant-btn:not(.ant-btn-sm):not(.ant-btn-lg) {
+    min-height: 40px;
+  }
+  /* Drawer 全宽微调 */
+  .ant-drawer-content-wrapper {
+    max-width: 320px;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* 超小屏幕 — 480px 以下 */
+@media (max-width: 480px) {
+  h1.ant-typography {
+    font-size: 28px !important;
   }
-  to {
-    transform: rotate(360deg);
+  .ant-layout .ant-layout-content {
+    padding: 12px 8px !important;
+  }
+  /* 卡片 padding 缩 */
+  .ant-card-body {
+    padding: 12px !important;
+  }
+}
+
+/* 桌面 — 1400px 以上大屏放宽 */
+@media (min-width: 1400px) {
+  .ant-layout .ant-layout-content {
+    padding: 48px 64px !important;
+  }
+}
+
+/* Reset default CRA styles */
+.App-logo, .App-header {
+  display: none !important;
+}
+
+/* Footer 移动端适配 */
+@media (max-width: 768px) {
+  .app-footer {
+    font-size: 12px !important;
+    padding: 12px 8px !important;
   }
 }

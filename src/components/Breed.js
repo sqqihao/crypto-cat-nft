@@ -28,13 +28,16 @@ function Breed(){
 	}
 	const onBreed = async function(){
 		// Breed
-		console.log(parentId)
-		// debugger;
-		const tx = await breedCat(parentId[0],parentId[1]);
-
-		console.log(tx);
-		message.success('哺育成功，链上哈希:'+tx);
-
+		if (!parentId[0] || !parentId[1]) {
+			message.warning('请先选父母');
+			return;
+		}
+		const res = await breedCat(parentId[0], parentId[1]);
+		if (res.ok) {
+			message.success('哺育成功，链上哈希:' + res.tx);
+		} else {
+			message.error(res.error);
+		}
 	}
 	return (<div>
 

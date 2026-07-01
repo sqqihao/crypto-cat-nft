@@ -14,6 +14,16 @@ import {animationStructData} from "./CatParts/animationStructData.js"
 function RenderCat(props){
 	const dna = props.dna;
 	const updateDna = props.updateDna;
+	// 防御性：dna 缺失或解包失败时显示占位卡（不抛错）
+	if (!dna || typeof dna !== 'object') {
+		return (
+			<Card borderRadius="10" w={!props.isFactory ? "210px" : undefined} h={!props.isFactory ? "330px" : undefined} className="box-shadow">
+				<Box m="auto" p={8} textAlign="center" color="gray.400" fontSize="sm">
+					🐱 加载中...
+				</Box>
+			</Card>
+		);
+	}
 	const {
 		foreheadShape,
 		eyesShape,
@@ -40,8 +50,9 @@ function RenderCat(props){
 	    <Card
 	      bgImage={getBgColor(backgroundColor)}
 	      borderRadius="10"
-	      w={!isFactory ? "210px" : undefined}
-	      h={!isFactory ? "330px" : undefined}
+	      w={!isFactory ? "210px" : "260px"}
+	      h={!isFactory ? "330px" : "320px"}
+	      overflow="visible"
 	      className="box-shadow">
 	    	<Box className={isFactory ? styles.cat : styles.catShow} m="auto">
 	    		<Box className={animation === 2 || animation === 6 ? styles.head : styles.head}>

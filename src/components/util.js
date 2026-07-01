@@ -2,7 +2,8 @@ import {colors} from "./colors.js";
 
 export const util = {
 	getColorString : function(color){
-	  return "#"+colors[color] || "#e2efff";
+	  // 越界 fallback 浅蓝（保证不抛错，颜色可能不准确但能渲染）
+	  return "#" + (colors[color] || colors[1] || "e2efff");
 	},
 	getBgColorString :function(color) {
 	  switch (color) {
@@ -21,7 +22,31 @@ export const util = {
 	  }
 	},
 	catDna:function(dnaBN){
-		const dnaStr = dnaBN.toString();
+		// 兼容两种 packed DNA 编码：
+		//   A) 10 字符 packed（前端 SAMPLE_CATS 风格）— 每段 1 位
+		//      顺序：[eyesShape, foreheadShape, animation, headColor, pawsColor, decorationColor, eyesColor, mouthColor, backgroundColor, collarColor]
+		//   B) 16 字符 packed（链上 createCat 接收的旧格式）— 每段 1-2 位
+		//      顺序：headColor(2) mouthColor(2) pawsColor(2) eyesColor(2) collarColor(2) eyesShape(1) foreheadShape(1) decorationColor(2) animation(1) backgroundColor(1)
+		const dnaStr = (typeof dnaBN === 'bigint') ? dnaBN.toString() : String(dnaBN);
+		if (!dnaStr || dnaStr === '0') {
+			return { headColor: 1, mouthColor: 1, pawsColor: 1, eyesColor: 1, collarColor: 1, eyesShape: 1, foreheadShape: 1, decorationColor: 1, animation: 1, backgroundColor: 1 };
+		}
+		// A) 10 字符 packed — 每段 1 位
+		if (dnaStr.length === 10) {
+			return {
+				eyesShape:       Number(dnaStr[0]),
+				foreheadShape:   Number(dnaStr[1]),
+				animation:       Number(dnaStr[2]),
+				headColor:       Number(dnaStr[3]),
+				pawsColor:       Number(dnaStr[4]),
+				decorationColor: Number(dnaStr[5]),
+				eyesColor:       Number(dnaStr[6]),
+				mouthColor:      Number(dnaStr[7]),
+				backgroundColor: Number(dnaStr[8]),
+				collarColor:     Number(dnaStr[9]),
+			};
+		}
+		// B) 16 字符 packed — 旧格式
 		const dna = {
 			//Colors
 			headColor: Number(dnaStr.substring(0, 2)),

@@ -5,9 +5,9 @@ import {util} from "../../util.js";
 function RenderCatInfo(props){
 	const dna = props.dna;
     const dnaString = util.getDnaString(dna);
-	return (
+    return (
 	    <Box className={styles.dnaDiv}>
-		    <Box  w="fit-content" m="auto" p={"1px 5px"} borderRadius={3}>
+		    <Box className={styles.dnaPill}>
 		      DNA:{dnaString}
 		    </Box>
 	    </Box>
